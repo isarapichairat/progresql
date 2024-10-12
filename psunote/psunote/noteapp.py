@@ -88,5 +88,22 @@ def notes_delete(note_id):
     db.session.commit()
     return flask.redirect(flask.url_for('index'))
 
+@app.route("/notes/tag/delete/<int:note_id>/<int:tag_id>", methods=["POST"])
+def tag_delete(note_id, tag_id):
+    db = models.db
+    note = db.session.get(models.Note, note_id)
+    
+    if not note:
+        flask.abort(404)
+    tag = db.session.get(models.Tag, tag_id)
+    
+    if not tag or tag not in note.tags:
+        flask.abort(404)
+    note.tags.remove(tag)
+    db.session.commit()
+
+    return flask.redirect(flask.url_for('index'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
