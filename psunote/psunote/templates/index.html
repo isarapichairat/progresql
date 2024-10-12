@@ -19,7 +19,13 @@
     {% endfor %}
       <br>
       Last update: {{ note.updated_date }}
+      <form action="{{ url_for('notes_delete', note_id=note.id) }}" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    
+    
     </div>
+
   </div>
 </div>
 {% endfor %}

@@ -6,6 +6,7 @@ import forms
 
 app = flask.Flask(__name__)
 app.config["SECRET_KEY"] = "This is secret key"
+
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = "postgresql://coe:CoEpasswd@localhost:5432/coedb"
@@ -75,7 +76,17 @@ def tags_view(tag_name):
         tag_name=tag_name,
         notes=notes,
     )
-
+@app.route("/notes/delete/<int:note_id>", methods=["POST"])
+def notes_delete(note_id):
+    db = models.db
+    note = db.session.get(models.Note, note_id)
+    
+    if not note:
+        flask.abort(404)
+    
+    db.session.delete(note)
+    db.session.commit()
+    return flask.redirect(flask.url_for('index'))
 
 if __name__ == "__main__":
     app.run(debug=True)
