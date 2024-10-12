@@ -12,10 +12,11 @@
     <div class="card-text my-3">
       {{ note.description }}
     </div>
-    <div class="card-footer text-muted">
+    <class class="card-footer text-muted">
       Tags: 
       {% for t in note.tags %}
         <a href="{{ url_for('tags_view', tag_name=t.name) }}">{{ t.name }}</a>
+        
         <!--delete tag-->
         <form action="{{ url_for('tag_delete', note_id=note.id, tag_id=t.id) }}" method="POST" class="d-inline">
           <button type="submit" class="btn btn-danger btn-sm">Delete Tag</button>
@@ -24,16 +25,17 @@
     {% endfor %}
       <br>
       Last update: {{ note.updated_date }}
+  </class>
+  
     <!--delete note-->>
       <form action="{{ url_for('notes_delete', note_id=note.id) }}" method="POST" class="d-inline">
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
     
     
-    </div>
+    
 
   </div>
 </div>
 {% endfor %}
 {% endblock %}
-
