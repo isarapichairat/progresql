@@ -16,7 +16,8 @@
     {{ form.tags.label }}
     {{ form.tags(class_='form-control') }}
   </div>
-  <button type="submit" class="btn btn-primary">Update</button>
+  <button type="submit" class="btn btn-outline-success">Update</button>
+  <a class="btn btn-outline-danger" href="{{ url_for('index') }}">Cancle</a>
 </form>
 
 {% endblock %}
