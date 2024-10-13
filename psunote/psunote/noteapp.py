@@ -1,3 +1,4 @@
+
 import flask
 
 import models
@@ -104,6 +105,37 @@ def tag_delete(note_id, tag_id):
 
     return flask.redirect(flask.url_for('index'))
 
+
+@app.route("/notes/edit/<int:note_id>", methods=["GET", "POST"])
+def notes_edit(note_id):
+    db = models.db
+    note = db.session.get(models.Note, note_id)
+
+    if not note:
+        flask.abort(404, description="ไม่พบโน้ตที่ระบุ")
+
+    form = forms.NoteForm(obj=note)
+
+    if form.validate_on_submit():
+        note.title = form.title.data
+        note.description = form.description.data
+        note.tags = []
+        for tag_name in form.tags.data:
+            tag = (
+                db.session.execute(db.select(models.Tag).where(models.Tag.name == tag_name))
+                .scalars()
+                .first()
+            )
+            if not tag:
+                tag = models.Tag(name=tag_name)
+                db.session.add(tag)
+
+            note.tags.append(tag)  
+
+        db.session.commit()
+        return flask.redirect(flask.url_for("index"))
+
+    return flask.render_template("notes-edit.html", form=form, note=note)
 
 
 
