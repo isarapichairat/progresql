@@ -77,9 +77,12 @@ def tags_view(tag_name):
         tag_name=tag_name,
         notes=notes,
     )
+
+#delete note
 @app.route("/notes/delete/<int:note_id>", methods=["POST"])
 def notes_delete(note_id):
     db = models.db
+    #check id note
     note = db.session.get(models.Note, note_id)
     
     if not note:
@@ -88,7 +91,7 @@ def notes_delete(note_id):
     db.session.delete(note)
     db.session.commit()
     return flask.redirect(flask.url_for('index'))
-
+#delete tag
 @app.route("/notes/tag/delete/<int:note_id>/<int:tag_id>", methods=["POST"])
 def tag_delete(note_id, tag_id):
     db = models.db
@@ -105,7 +108,7 @@ def tag_delete(note_id, tag_id):
 
     return flask.redirect(flask.url_for('index'))
 
-
+#edit note
 @app.route("/notes/edit/<int:note_id>", methods=["GET", "POST"])
 def notes_edit(note_id):
     db = models.db
